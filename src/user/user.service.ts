@@ -24,4 +24,12 @@ export class UserService {
             }
         })
     }
+
+    async getAllUsers() {
+        return this.prisma.user.findMany()
+    }
+
+    async getUserById(userId: number) {
+        return this.prisma.user.findUnique({ where: { id: userId } })
+    }
 }
