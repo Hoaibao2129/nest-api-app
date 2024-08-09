@@ -17,7 +17,7 @@ model user {
   id         Int      @id @default(autoincrement())
   name       String
   password   String
-  tel        String
+  tel        String   @unique
   email      String
   address    String
   created_at DateTime @default(now())
