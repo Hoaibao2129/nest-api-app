@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { CreateUserDto } from '../user/dto/user.dto';
+import { UpdateUserDto } from '../user/dto/updateUser.dto';
 import { PrismaService } from '../../prisma/prisma.service';
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 import { User } from './entities/user.entity';
 
 describe('UserService', () => {
@@ -14,7 +15,7 @@ describe('UserService', () => {
       findUnique: jest.fn(),
       create: jest.fn(),
       findMany: jest.fn(),
-      find: jest.fn(),
+      update: jest.fn(),
     },
   };
 
@@ -82,7 +83,6 @@ describe('UserService', () => {
       password: '123456',
       address: '123 Main Street',
     };
-
     (prismaService.user.findUnique as jest.Mock).mockResolvedValueOnce({
       id: 1,
       name: 'John',
@@ -91,7 +91,6 @@ describe('UserService', () => {
       password: 'password',
       address: '456 Another Street',
     });
-
     await expect(service.createUser(createUserDto)).rejects.toThrow(
       new ConflictException('User already exists'),
     );
@@ -108,8 +107,36 @@ describe('UserService', () => {
     (prismaService.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
     const result = await service.getUserById(1);
     expect(result).toEqual(mockUser);
-
   })
 
+  it("should update user by userId", async () => {
+    (prismaService.user.update as jest.Mock).mockResolvedValue(mockUser);
+    const userId = 1;
+    const updateUserDto: UpdateUserDto = {
+      id: userId,
+      name: 'John',
+      email: 'john@gmail.com',
+    };
+    const result = await service.updateUser(updateUserDto);
+    expect(result).toEqual(mockUser);
+    expect(prismaService.user.update).toHaveBeenCalledWith({
+      where: { id: userId },
+      data: updateUserDto,
+    });
+  })
 
+  it("should throw NotFoundException if user not found", async () => {
+    (prismaService.user.findUnique as jest.Mock).mockResolvedValue(null);
+
+    const userId = 3;
+    const updateUserDto: UpdateUserDto = {
+      id: userId,
+      name: 'John',
+      email: 'john@gmail.com',
+    };
+
+    await expect(service.updateUser(updateUserDto)).rejects.toThrow(
+      new NotFoundException(`User with ID ${userId} not found`)
+    );
+  })
 });
