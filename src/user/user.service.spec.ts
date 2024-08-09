@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from '../user/dto/user.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ConflictException } from '@nestjs/common';
+import { User } from './entities/user.entity';
 
 describe('UserService', () => {
   let service: UserService;
@@ -12,8 +13,29 @@ describe('UserService', () => {
     user: {
       findUnique: jest.fn(),
       create: jest.fn(),
+      findMany: jest.fn(),
+      find: jest.fn(),
     },
   };
+
+  const mockUser: User[] = [
+    {
+      id: 1,
+      name: 'John',
+      email: "john@gmail.com",
+      tel: "123456789",
+      password: "password",
+      address: "123 Main Street",
+    },
+    {
+      id: 2,
+      name: "Ben",
+      email: "ben@gmail.com",
+      tel: "123456789",
+      password: "123456",
+      address: "123 Main Street",
+    }
+  ]
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -61,7 +83,6 @@ describe('UserService', () => {
       address: '123 Main Street',
     };
 
-    // Simulate an existing user with the same `tel`
     (prismaService.user.findUnique as jest.Mock).mockResolvedValueOnce({
       id: 1,
       name: 'John',
@@ -75,4 +96,20 @@ describe('UserService', () => {
       new ConflictException('User already exists'),
     );
   });
+
+  it('should return all users', async () => {
+    (prismaService.user.findMany as jest.Mock).mockResolvedValue(mockUser);
+    const result = await service.getAllUsers();
+    expect(result).toEqual(mockUser);
+    expect(prismaService.user.findMany).toHaveBeenCalled();
+  })
+
+  it("should return user with userId", async () => {
+    (prismaService.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
+    const result = await service.getUserById(1);
+    expect(result).toEqual(mockUser);
+
+  })
+
+
 });
