@@ -20,6 +20,7 @@ model user {
   tel        String   @unique
   email      String
   address    String
+  token      String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

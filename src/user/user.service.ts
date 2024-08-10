@@ -23,8 +23,8 @@ export class UserService {
             })
         })
 
-        const salt = await bcrypt.genSaltSync(saltRounds);
-        const hash = await bcrypt.hashSync(myPlaintextPassword, salt);
+        const salt = await bcrypt.genSalt(saltRounds);
+        const hash = await bcrypt.hash(createUserDto.password, salt);
 
         return this.prisma.user.create({
             data: {
@@ -32,7 +32,8 @@ export class UserService {
                 email: createUserDto.email,
                 password: hash,
                 tel: createUserDto.tel,
-                address: createUserDto.address
+                address: createUserDto.address,
+                token: null,
             }
         })
     }
@@ -54,7 +55,6 @@ export class UserService {
             throw new NotFoundException(`User with ID ${updateUserDto.id} not found`);
         }
 
-        // Update the user with the new data
         return this.prisma.user.update({
             where: { id: updateUserDto.id },
             data: updateUserDto,
