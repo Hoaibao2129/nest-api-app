@@ -5,6 +5,7 @@ import { UpdateUserDto } from '../user/dto/updateUser.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { User } from './entities/user.entity';
+import e from 'express';
 
 describe('UserService', () => {
   let service: UserService;
@@ -16,6 +17,7 @@ describe('UserService', () => {
       create: jest.fn(),
       findMany: jest.fn(),
       update: jest.fn(),
+      delete: jest.fn(),
     },
   };
 
@@ -138,5 +140,27 @@ describe('UserService', () => {
     await expect(service.updateUser(updateUserDto)).rejects.toThrow(
       new NotFoundException(`User with ID ${userId} not found`)
     );
+  })
+
+  it("should delete user by userId", async () => {
+    const userId = 2;
+    const deletedUser = {
+      id: 1,
+      name: "John",
+      email: "john@gmail.com",
+      tel: "123456789",
+      password: "password",
+      address: "123 Main Street",
+    };
+    (prismaService.user.findUnique as jest.Mock).mockResolvedValue(deletedUser);
+    (prismaService.user.delete as jest.Mock).mockResolvedValue(deletedUser);
+    const result = await service.deleteUser(userId);
+    expect(result).toEqual("User deleted successfully");
+  });
+
+  it("should throw NotFoundException if user not found", async () => {
+    const userId = 3;
+    (prismaService.user.findUnique as jest.Mock).mockResolvedValue(null);
+    await expect(service.deleteUser(userId)).rejects.toThrow(new NotFoundException("User not found"));
   })
 });
