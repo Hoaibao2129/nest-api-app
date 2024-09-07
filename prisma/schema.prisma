@@ -18,7 +18,7 @@ model user {
   name       String
   password   String
   tel        String   @unique
-  email      String
+  email      String   @unique
   address    String
   token      String?
   created_at DateTime @default(now())

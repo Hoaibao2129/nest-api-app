@@ -25,20 +25,20 @@ describe('UserService', () => {
     {
       id: 1,
       name: 'John',
-      email: "john@gmail.com",
-      tel: "123456789",
-      password: "password",
-      address: "123 Main Street",
+      email: 'john@gmail.com',
+      tel: '123456789',
+      password: 'password',
+      address: '123 Main Street',
     },
     {
       id: 2,
-      name: "Ben",
-      email: "ben@gmail.com",
-      tel: "123456789",
-      password: "123456",
-      address: "123 Main Street",
-    }
-  ]
+      name: 'Ben',
+      email: 'ben@gmail.com',
+      tel: '123456789',
+      password: '123456',
+      address: '123 Main Street',
+    },
+  ];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -103,15 +103,15 @@ describe('UserService', () => {
     const result = await service.getAllUsers();
     expect(result).toEqual(mockUser);
     expect(prismaService.user.findMany).toHaveBeenCalled();
-  })
+  });
 
-  it("should return user with userId", async () => {
+  it('should return user with userId', async () => {
     (prismaService.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
     const result = await service.getUserById(1);
     expect(result).toEqual(mockUser);
-  })
+  });
 
-  it("should update user by userId", async () => {
+  it('should update user by userId', async () => {
     (prismaService.user.update as jest.Mock).mockResolvedValue(mockUser);
     const userId = 1;
     const updateUserDto: UpdateUserDto = {
@@ -125,9 +125,9 @@ describe('UserService', () => {
       where: { id: userId },
       data: updateUserDto,
     });
-  })
+  });
 
-  it("should throw NotFoundException if user not found", async () => {
+  it('should throw NotFoundException if user not found', async () => {
     (prismaService.user.findUnique as jest.Mock).mockResolvedValue(null);
 
     const userId = 3;
@@ -138,29 +138,31 @@ describe('UserService', () => {
     };
 
     await expect(service.updateUser(updateUserDto)).rejects.toThrow(
-      new NotFoundException(`User with ID ${userId} not found`)
+      new NotFoundException(`User with ID ${userId} not found`),
     );
-  })
+  });
 
-  it("should delete user by userId", async () => {
+  it('should delete user by userId', async () => {
     const userId = 2;
     const deletedUser = {
       id: 1,
-      name: "John",
-      email: "john@gmail.com",
-      tel: "123456789",
-      password: "password",
-      address: "123 Main Street",
+      name: 'John',
+      email: 'john@gmail.com',
+      tel: '123456789',
+      password: 'password',
+      address: '123 Main Street',
     };
     (prismaService.user.findUnique as jest.Mock).mockResolvedValue(deletedUser);
     (prismaService.user.delete as jest.Mock).mockResolvedValue(deletedUser);
     const result = await service.deleteUser(userId);
-    expect(result).toEqual("User deleted successfully");
+    expect(result).toEqual('User deleted successfully');
   });
 
-  it("should throw NotFoundException if user not found", async () => {
+  it('should throw NotFoundException if user not found', async () => {
     const userId = 3;
     (prismaService.user.findUnique as jest.Mock).mockResolvedValue(null);
-    await expect(service.deleteUser(userId)).rejects.toThrow(new NotFoundException("User not found"));
-  })
+    await expect(service.deleteUser(userId)).rejects.toThrow(
+      new NotFoundException('User not found'),
+    );
+  });
 });

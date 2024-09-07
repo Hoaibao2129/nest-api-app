@@ -3,17 +3,10 @@ import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
-  const user = {
-    tel: "123456789",
-    password: "123456789",
-    name: "John Doe",
-  }
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [AuthService],
     }).compile();
-
     service = module.get<AuthService>(AuthService);
   });
 
@@ -21,11 +14,7 @@ describe('AuthService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should return message authentication successful', () => {
+  it('should return message authentication successful', () => {});
 
-  })
-
-  it('should return error message authentication failed', () => {
-
-  })
+  it('should return error message authentication failed', () => {});
 });
