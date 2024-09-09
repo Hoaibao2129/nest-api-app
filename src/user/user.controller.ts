@@ -9,9 +9,8 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/user.dto';
 import { UserService } from './user.service';
-import { get } from 'http';
 import { UpdateUserDto } from './dto/updateUser.dto';
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(protected userService: UserService) {}
 

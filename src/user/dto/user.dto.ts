@@ -4,4 +4,6 @@ export class CreateUserDto {
   tel: string;
   email: string;
   password: string;
+  roleId: number;
+  cart?: string;
 }

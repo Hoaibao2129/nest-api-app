@@ -2,11 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/user.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { User } from './entities/user.entity';
-const bcrypt = require('bcrypt');
+import * as bcrypt from 'bcrypt';
 const saltRounds = 10;
 const myPlaintextPassword = 's0//P4$$w0rD';
-const someOtherPlaintextPassword = 'not_bacon';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
@@ -25,6 +23,14 @@ export class UserService {
     const salt = await bcrypt.genSalt(saltRounds);
     const hash = await bcrypt.hash(createUserDto.password, salt);
 
+    const role = await this.prisma.role.findUnique({
+      where: { id: createUserDto.roleId },
+    });
+
+    if (!role) {
+      throw new Error('Role not found');
+    }
+
     return this.prisma.user.create({
       data: {
         name: createUserDto.name,
@@ -33,6 +39,10 @@ export class UserService {
         tel: createUserDto.tel,
         address: createUserDto.address,
         token: null,
+        role: { connect: { id: role.id } },
+        cart: {
+          create: {},
+        },
       },
     });
   }
