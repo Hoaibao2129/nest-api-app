@@ -9,25 +9,47 @@ import * as YAML from 'yamljs';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Directory where Swagger YAML files are located
   const swaggerDir = join(__dirname, '..', 'swagger-doc');
 
-  // Read all YAML files from the directory
   const swaggerFiles = fs
     .readdirSync(swaggerDir)
     .filter((file) => file.endsWith('.yaml'));
 
-  // Merge all YAML files into a single Swagger document
-  let swaggerDocument = {};
+  let swaggerDocument: any = {
+    openapi: '3.0.0',
+    info: {
+      title: 'API Documentation',
+      version: '1.0.0',
+    },
+    paths: {},
+    components: {},
+    tags: [],
+  };
+
   swaggerFiles.forEach((file) => {
     const filePath = path.join(swaggerDir, file);
     const yamlContent = YAML.load(filePath);
-    swaggerDocument = { ...swaggerDocument, ...yamlContent };
+
+    swaggerDocument = mergeSwaggerDocuments(swaggerDocument, yamlContent);
   });
 
-  // Set up Swagger UI
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   await app.listen(3000);
+}
+
+function mergeSwaggerDocuments(mainDoc: any, additionalDoc: any): any {
+  return {
+    ...mainDoc,
+    paths: {
+      ...mainDoc.paths,
+      ...additionalDoc.paths,
+    },
+    components: {
+      ...mainDoc.components,
+      ...additionalDoc.components,
+    },
+    tags: [...mainDoc.tags, ...(additionalDoc.tags || [])],
+  };
 }
 
 bootstrap();
