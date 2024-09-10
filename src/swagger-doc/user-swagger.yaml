@@ -113,38 +113,37 @@ paths:
             type: integer
             format: int32
           description: The ID of the user to update.
-        - name: body
-          in: requestBody
-          required: true
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: User's name.
-                  password:
-                    type: string
-                    description: User's password.
-                  tel:
-                    type: string
-                    description: User's telephone number.
-                  email:
-                    type: string
-                    description: User's email address.
-                  address:
-                    type: string
-                    description: User's address.
-                  token:
-                    type: string
-                    description: User's authentication token.
-                required:
-                  - name
-                  - password
-                  - tel
-                  - email
-                  - address
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: User's name.
+                password:
+                  type: string
+                  description: User's password.
+                tel:
+                  type: string
+                  description: User's telephone number.
+                email:
+                  type: string
+                  description: User's email address.
+                address:
+                  type: string
+                  description: User's address.
+                token:
+                  type: string
+                  description: User's authentication token.
+              required:
+                - name
+                - password
+                - tel
+                - email
+                - address
       responses:
         "200":
           description: User updated successfully.
@@ -154,20 +153,25 @@ paths:
           description: Not found. User with the specified ID does not exist.
         "500":
           description: Internal server error.
-
+  /users/:
     delete:
       tags:
         - User
       summary: Delete a user by ID
-      description: Endpoint to delete a user by their ID.
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-          description: The ID of the user to delete.
+      description: Endpoint to delete a user by their ID. The ID is passed in the request body.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  format: int32
+                  description: The ID of the user to delete.
+              required:
+                - userId
       responses:
         "200":
           description: User deleted successfully.

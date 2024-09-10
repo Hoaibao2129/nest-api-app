@@ -1,0 +1,37 @@
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { CategoryService } from './category.service';
+import { isEmpty } from '../helper/checkEmptyData';
+import { UpdateCategoryDto } from './dto/update-category';
+@Controller('category')
+export class CategoryController {
+  constructor(private categoryService: CategoryService) {}
+
+  @Post('')
+  async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
+    if (isEmpty(createCategoryDto)) {
+      throw new BadRequestException('Category data can not be empty');
+    }
+    return this.categoryService.createCategory(createCategoryDto);
+  }
+
+  @Get('')
+  async getAllCategories() {
+    return this.categoryService.getAllCategories();
+  }
+
+  @Put('')
+  async updateCategory(@Body() updateCategoryDto: UpdateCategoryDto) {
+    if (isEmpty(updateCategoryDto)) {
+      throw new BadRequestException('Category data can not be empty');
+    }
+    return this.categoryService.updateCategory(updateCategoryDto);
+  }
+}
