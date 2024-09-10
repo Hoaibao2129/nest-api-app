@@ -6,16 +6,21 @@ import {
   Param,
   Put,
   Delete,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { isEmpty } from '../helper/checkEmptyData';
 @Controller('users')
 export class UserController {
   constructor(protected userService: UserService) {}
 
   @Post('')
   async createUser(@Body() createUserDto: CreateUserDto) {
+    if (isEmpty(createUserDto)) {
+      throw new BadRequestException('User data can not be empty');
+    }
     return this.userService.createUser(createUserDto);
   }
 
