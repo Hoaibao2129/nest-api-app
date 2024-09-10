@@ -41,11 +41,17 @@ export class UserController {
 
   @Put('')
   async updateUser(@Body() updateUserDto: UpdateUserDto) {
+    if (!isEmpty(updateUserDto)) {
+      throw new BadRequestException('User data can not be empty');
+    }
     return this.userService.updateUser(updateUserDto);
   }
 
   @Delete('')
-  async deleteUser(@Body('id') userId) {
+  async deleteUser(@Body('userId') userId) {
+    if (isEmpty(userId)) {
+      throw new BadRequestException('User data can not be empty');
+    }
     return this.userService.deleteUser(+userId);
   }
 }

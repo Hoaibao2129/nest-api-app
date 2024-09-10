@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: API NEST JS
+  version: 1.0.0
+  description: STUDY NODEJS (NEST-JS) API
+
+paths:
+  /category:
+    post:
+      tags:
+        - Category
+      summary: Create a new category
+      description: Endpoint to create a new category.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoryName:
+                  type: string
+                  description: The name of the category to create.
+              required:
+                - categoryName
+      responses:
+        "201":
+          description: Category created successfully.
+        "400":
+          description: Bad request. Invalid input or missing fields.
+        "500":
+          description: Internal server error.
+
+    get:
+      tags:
+        - Category
+      summary: Retrieve all categories
+      description: Endpoint to retrieve all categories.
+      responses:
+        "200":
+          description: List of all categories.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int32
+                      description: The unique identifier for the category.
+                    categoryName:
+                      type: string
+                      description: The name of the category.
+                  required:
+                    - id
+                    - categoryName
+        "500":
+          description: Internal server error.
+
+    put:
+      tags:
+        - Category
+      summary: Update a category
+      description: Endpoint to update a category.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int32
+                  description: The unique identifier for the category.
+                categoryName:
+                  type: string
+                  description: The name of the category to update.
+              required:
+                - id
+                - categoryName
+      responses:
+        "200":
+          description: Category updated successfully.
+        "400":
+          description: Bad request. Invalid input.
+        "404":
+          description: Not found. Category does not exist.
+        "500":
+          description: Internal server error.
+
+    delete:
+      tags:
+        - Category
+      summary: Delete a category
+      description: Endpoint to delete a category by its ID. The ID is passed in the request body.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int32
+                  description: The ID of the category to delete.
+              required:
+                - id
+      responses:
+        "200":
+          description: Category deleted successfully.
+        "400":
+          description: Bad request. Invalid category ID format.
+        "404":
+          description: Not found. Category with the specified ID does not exist.
+        "500":
+          description: Internal server error.
+
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: The unique identifier for the category.
+        categoryName:
+          type: string
+          description: The name of the category.
+      required:
+        - id
+        - categoryName
