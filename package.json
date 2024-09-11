@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc && copyfiles -u 1 swagger-doc/**/* dist/swagger-doc",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:all": "prettier --write \"src/**/*.{ts,js,json}\" \"test/**/*.{ts,js,json}\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
