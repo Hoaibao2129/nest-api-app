@@ -1,0 +1,156 @@
+openapi: 3.0.0
+info:
+  title: API NEST JS
+  version: 1.0.0
+  description: STUDY NODEJS (NEST-JS) API
+
+paths:
+  /product:
+    post:
+      tags:
+        - Product
+      summary: Create a new product
+      description: Endpoint to create a new product.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productName:
+                  type: string
+                  description: The name of the product to create.
+                categoryId:
+                  type: integer
+                  format: int32
+                  description: The ID of the category to which the product belongs.
+              required:
+                - productName
+                - categoryId
+      responses:
+        "201":
+          description: Product created successfully.
+        "400":
+          description: Bad request. Invalid input or missing fields.
+        "500":
+          description: Internal server error.
+
+    get:
+      tags:
+        - Product
+      summary: Retrieve all products
+      description: Endpoint to retrieve all products.
+      responses:
+        "200":
+          description: List of all products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int32
+                      description: The unique identifier for the product.
+                    productName:
+                      type: string
+                      description: The name of the product.
+                    categoryId:
+                      type: integer
+                      format: int32
+                      description: The ID of the category to which the product belongs.
+                  required:
+                    - id
+                    - productName
+                    - categoryId
+        "500":
+          description: Internal server error.
+
+    put:
+      tags:
+        - Product
+      summary: Update a product
+      description: Endpoint to update a product.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int32
+                  description: The unique identifier for the product.
+                productName:
+                  type: string
+                  description: The name of the product to update.
+                categoryId:
+                  type: integer
+                  format: int32
+                  description: The ID of the category to which the product belongs.
+              required:
+                - id
+                - productName
+                - categoryId
+      responses:
+        "200":
+          description: Product updated successfully.
+        "400":
+          description: Bad request. Invalid input.
+        "404":
+          description: Not found. Product does not exist.
+        "500":
+          description: Internal server error.
+
+    delete:
+      tags:
+        - Product
+      summary: Delete a product
+      description: Endpoint to delete a product by its ID. The ID is passed in the request body.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int32
+                  description: The ID of the product to delete.
+              required:
+                - id
+      responses:
+        "200":
+          description: Product deleted successfully.
+        "400":
+          description: Bad request. Invalid product ID format.
+        "404":
+          description: Not found. Product with the specified ID does not exist.
+        "500":
+          description: Internal server error.
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: The unique identifier for the product.
+        productName:
+          type: string
+          description: The name of the product.
+        categoryId:
+          type: integer
+          format: int32
+          description: The ID of the category to which the product belongs.
+      required:
+        - id
+        - productName
+        - categoryId
