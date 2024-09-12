@@ -4,13 +4,16 @@ import { AuthService } from './auth.service';
 import { PrismaModule } from 'prisma/prisma.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { config } from 'dotenv';
+
+config();
 
 @Module({
   imports: [
     PrismaModule,
     PassportModule,
     JwtModule.register({
-      secret: 'hoaibao2109',
+      secret: process.env.SECRET_KEY,
       signOptions: { expiresIn: '60m' },
     }),
   ],

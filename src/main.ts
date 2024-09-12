@@ -5,6 +5,9 @@ import { AppModule } from './app.module';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as YAML from 'yamljs';
+import { config } from 'dotenv';
+
+config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
