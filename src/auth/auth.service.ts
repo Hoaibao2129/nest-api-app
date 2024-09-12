@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { loginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
-const bcrypt = require('bcrypt');
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
   constructor(
@@ -24,6 +24,7 @@ export class AuthService {
         password: checkUser.password,
       };
       const token = await this.jwtService.sign(payload);
+
       await this.prisma.user.update({
         where: { tel: checkUser.tel },
         data: { token: token },
