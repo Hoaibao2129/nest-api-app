@@ -19,8 +19,9 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  role Role  @relation(fields: [roleId], references: [id])
-  cart Cart?
+  role   Role     @relation(fields: [roleId], references: [id])
+  cart   Cart?
+  rating Rating[]
 }
 
 model Role {
@@ -37,18 +38,36 @@ model Category {
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
+  subCategories SubCategory[]
+}
+
+model SubCategory {
+  id              Int      @id @default(autoincrement())
+  categoryId      Int
+  subCategoryName String
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  category Category  @relation(fields: [categoryId], references: [id])
   products Product[]
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  productName String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  categoryId  Int
+  id            Int      @id @default(autoincrement())
+  productName   String
+  subCategoryId Int
+  price         Int
+  size          String[]
+  total         Int
+  description   String
+  image         String[]
+  totalRating   Int
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 
-  category  Category   @relation(fields: [categoryId], references: [id])
-  cartItems CartItem[]
+  subcategory SubCategory @relation(fields: [subCategoryId], references: [id])
+  cartItems   CartItem[]
+  rating      Rating[]
 }
 
 model Cart {
@@ -71,4 +90,15 @@ model CartItem {
   product Product @relation(fields: [productId], references: [id])
 
   @@unique([cartId, productId])
+}
+
+model Rating {
+  id          Int    @id @default(autoincrement())
+  productId   Int
+  userId      Int
+  rating      Int
+  description String
+
+  product Product @relation(fields: [productId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
 }
