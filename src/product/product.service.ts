@@ -9,7 +9,7 @@ export class ProductService {
   async createProduct(createProduct: CreateProductDto): Promise<Product> {
     const checkCategory = await this.prisma.category.findUnique({
       where: {
-        id: createProduct.categoryId,
+        id: createProduct.subCategoryId,
       },
     });
     if (!checkCategory) {
@@ -18,7 +18,13 @@ export class ProductService {
     return await this.prisma.product.create({
       data: {
         productName: createProduct.productName,
-        categoryId: createProduct.categoryId,
+        subCategoryId: createProduct.subCategoryId,
+        price: createProduct.price,
+        size: createProduct.size,
+        total: createProduct.total,
+        description: createProduct.description,
+        image: createProduct.image,
+        totalRating: createProduct.totalRating,
       },
     });
   }

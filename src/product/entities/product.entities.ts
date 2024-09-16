@@ -1,5 +1,11 @@
 export class Product {
   id: number;
   productName: string;
-  categoryId: number;
+  subCategoryId: number;
+  price: number;
+  size: string[];
+  total: number;
+  description: string;
+  image: string[];
+  totalRating: number;
 }

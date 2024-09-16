@@ -1,4 +1,10 @@
 export class CreateProductDto {
   productName: string;
-  categoryId: number;
+  subCategoryId: number;
+  price: number;
+  size: string[];
+  total: number;
+  description: string;
+  image: string[];
+  totalRating: number;
 }
