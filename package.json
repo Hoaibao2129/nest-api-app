@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "tsc && copyfiles -u 1 swagger-doc/**/* dist/swagger-doc && nest build",
+    "build": "tsc && copyfiles -u 1 swagger-doc/**/* dist/swagger-doc && pnpm run generate:prisma && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:all": "prettier --write \"src/**/*.{ts,js,json}\" \"test/**/*.{ts,js,json}\"",
     "start": "nest start",
