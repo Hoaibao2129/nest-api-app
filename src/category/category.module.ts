@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
-import { PrismaModule } from 'prisma/prisma.module';
+import { PrismaModule } from 'src/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { config } from 'dotenv';
 config();
@@ -17,4 +17,4 @@ config();
   controllers: [CategoryController],
   providers: [CategoryService],
 })
-export class CategoryModule {}
+export class CategoryModule { }

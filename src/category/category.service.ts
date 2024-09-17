@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../prisma.service';
 import { CategoryEntity } from './entities/category.entities';
 import { UpdateCategoryDto } from './dto/update-category';
 @Injectable()
 export class CategoryService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   async createCategory(
     createCategoryDto: CreateCategoryDto,
   ): Promise<CategoryEntity> {

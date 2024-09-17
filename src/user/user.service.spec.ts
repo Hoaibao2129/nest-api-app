@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { CreateUserDto } from '../user/dto/user.dto';
 import { UpdateUserDto } from '../user/dto/updateUser.dto';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../prisma.service';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { User } from './entities/user.entity';
 describe('UserService', () => {
