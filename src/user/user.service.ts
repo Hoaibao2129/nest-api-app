@@ -7,7 +7,7 @@ const saltRounds = 10;
 const myPlaintextPassword = 's0//P4$$w0rD';
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async createUser(createUserDto: CreateUserDto) {
     const isUserExist = await this.prisma.user.findUnique({
@@ -17,7 +17,7 @@ export class UserService {
       throw new Error('User already exists');
     }
     bcrypt.genSalt(saltRounds, function (err, salt) {
-      bcrypt.hash(myPlaintextPassword, salt, function (err, hash) { });
+      bcrypt.hash(myPlaintextPassword, salt, function (err, hash) {});
     });
 
     const salt = await bcrypt.genSalt(saltRounds);

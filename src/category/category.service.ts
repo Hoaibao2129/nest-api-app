@@ -5,7 +5,7 @@ import { CategoryEntity } from './entities/category.entities';
 import { UpdateCategoryDto } from './dto/update-category';
 @Injectable()
 export class CategoryService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
   async createCategory(
     createCategoryDto: CreateCategoryDto,
   ): Promise<CategoryEntity> {

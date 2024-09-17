@@ -17,4 +17,4 @@ config();
   providers: [UserService],
   controllers: [UserController],
 })
-export class UserModule { }
+export class UserModule {}
